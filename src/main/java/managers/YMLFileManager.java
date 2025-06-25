@@ -1,8 +1,8 @@
-package me.arkallic.chaotix.managers;
+package managers;
 
-import me.arkallic.chaotix.Chaotix;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -14,13 +14,13 @@ public class YMLFileManager {
     private final File file;
     private final String fileName;
     private FileConfiguration config;
-    private final Chaotix chaotix;
+    private final JavaPlugin javaPlugin;
 
-    public YMLFileManager(String folder, String fileName, Chaotix chaotix) {
+    public YMLFileManager(String folder, String fileName, JavaPlugin javaPlugin) {
+        this.javaPlugin = javaPlugin;
         this.fileName = fileName.endsWith(".yml") ? fileName : fileName + ".yml";
-        this.chaotix = chaotix;
 
-        this.file = new File(chaotix.getDataFolder(), folder + File.separator + this.fileName);
+        this.file = new File(javaPlugin.getDataFolder(), folder + File.separator + this.fileName);
         createFileIfNotExists();
         this.config = YamlConfiguration.loadConfiguration(file);
     }
@@ -31,7 +31,7 @@ public class YMLFileManager {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
 
-                InputStream resource = chaotix.getResource(fileName);
+                InputStream resource = javaPlugin.getResource(fileName);
                 if (resource != null) {
                     try (Reader reader = new InputStreamReader(resource, StandardCharsets.UTF_8);
                          Writer writer = new FileWriter(file)) {
@@ -43,10 +43,10 @@ public class YMLFileManager {
                         }
                     }
                 } else {
-                    chaotix.getLogger().warning("No default resource found for " + fileName + ", created blank file.");
+                    javaPlugin.getLogger().warning("No default resource found for " + fileName + ", created blank file.");
                 }
             } catch (IOException e) {
-                chaotix.getLogger().log(Level.SEVERE, "Could not create or copy " + fileName, e);
+                javaPlugin.getLogger().log(Level.SEVERE, "Could not create or copy " + fileName, e);
             }
         }
     }
@@ -66,7 +66,7 @@ public class YMLFileManager {
     public void save() {
         try {
             config.save(file);
-            chaotix.getLogger().info("Saved YAML file: " + fileName);
+            javaPlugin.getLogger().info("Saved YAML file: " + fileName);
         } catch (IOException e) {
             throw new RuntimeException("Failed to save YAML file: " + fileName, e);
         }

@@ -1,30 +1,22 @@
-package me.arkallic.chaotix.managers;
+package player;
 
-import me.arkallic.chaotix.Chaotix;
-import me.arkallic.chaotix.models.PlayerData;
-import me.arkallic.chaotix.modules.PlayerDataModule;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
+import managers.YMLFileManager;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
-
-import static me.arkallic.chaotix.utils.ChatUtils.log;
 
 public class PlayerDataManager {
 
-    private final Chaotix chaotix;
+    private final JavaPlugin javaPlugin;
 
     private final Map<UUID, PlayerData> data = new HashMap<>();
     private final Map<String, PlayerDataModule> modules = new HashMap<>();
 
-    public PlayerDataManager(Chaotix chaotix) {
-        this.chaotix = chaotix;
+    public PlayerDataManager(JavaPlugin javaPlugin) {
+        this.javaPlugin = javaPlugin;
     }
 
     public Map<UUID, PlayerData> getData() {
@@ -43,16 +35,6 @@ public class PlayerDataManager {
 
     public Map<String, PlayerDataModule> getModules() {
         return this.modules;
-    }
-
-    public void saveCorePlayerData(UUID uuid, PlayerData pd) {
-        YMLFileManager fileManager = new YMLFileManager("Players", uuid.toString(), chaotix);
-        FileConfiguration config = fileManager.getConfig();
-
-        config.set("Name", pd.getName());
-        config.set("DisplayName", pd.getDisplayName());
-        config.set("HomeLimit", pd.getHomeLimit());
-        fileManager.save();
     }
 
     public PlayerDataModule getModule(String name) {

@@ -1,4 +1,4 @@
-package me.arkallic.chaotix.models;
+package player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,15 +8,11 @@ public class PlayerData {
 
     private final UUID uuid;
     private String name;
-    private String displayName;
-    private String title;
-    private int HomeLimit;
-
-    private final Map<String, Home> homes;
+    private Map<String, Object> moduleData;
 
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
-        homes = new HashMap<>();
+        moduleData = new HashMap<>();
     }
 
     public UUID getUuid() {
@@ -31,31 +27,16 @@ public class PlayerData {
         this.name = name;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public Map<String, Object> getModuleData() {
+        return moduleData;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setModuleData(String key, Object value) {
+        moduleData.put(key, value);
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Map<String, Home> getHomes() {
-        return homes;
-    }
-
-    public int getHomeLimit() {
-        return HomeLimit;
-    }
-
-    public void setHomeLimit(int homeLimit) {
-        HomeLimit = homeLimit;
+    @SuppressWarnings("unchecked")
+    public <T> T getModuleData(String name) {
+        return (T) moduleData.get(name);
     }
 }
