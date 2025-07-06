@@ -1,7 +1,6 @@
 package player;
 
-import managers.YMLFileManager;
-import org.bukkit.configuration.file.FileConfiguration;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -17,6 +16,14 @@ public class PlayerDataManager {
 
     public PlayerDataManager(JavaPlugin javaPlugin) {
         this.javaPlugin = javaPlugin;
+    }
+
+    public void registerModule(String key, PlayerDataModule module) {
+        modules.put(key, module);
+    }
+
+    public <T extends PlayerDataModule> T getModuleData(String key) {
+        return (T) modules.get(key);
     }
 
     public Map<UUID, PlayerData> getData() {
@@ -36,6 +43,7 @@ public class PlayerDataManager {
     public Map<String, PlayerDataModule> getModules() {
         return this.modules;
     }
+
 
     public PlayerDataModule getModule(String name) {
         return this.modules.get(name);
