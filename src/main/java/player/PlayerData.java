@@ -1,6 +1,5 @@
 package player;
 
-import models.Home;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,12 +10,10 @@ public class PlayerData {
     private final UUID uuid;
     private String name;
     private Map<String, Object> moduleData;
-    private final Map<String, Home> homes;
 
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
         moduleData = new HashMap<>();
-        homes = new HashMap<>();
     }
 
     public UUID getUuid() {
@@ -30,15 +27,6 @@ public class PlayerData {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Home getHome(String home) {
-        return homes.get(home);
-    }
-
-    public Map<String, Home> getHomes() {
-        return this.homes;
-
-     }
 
     public Map<String, Object> getModuleData() {
         return moduleData;
