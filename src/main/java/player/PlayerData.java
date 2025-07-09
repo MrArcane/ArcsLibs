@@ -4,12 +4,13 @@ package player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class PlayerData {
 
     private final UUID uuid;
     private String name;
-    private Map<String, Object> moduleData;
+    private final Map<String, Object> moduleData;
 
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
@@ -39,5 +40,10 @@ public class PlayerData {
     @SuppressWarnings("unchecked")
     public <T> T getModuleData(String name) {
         return (T) moduleData.get(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getOrCreateModuleData(String key, Supplier<T> creator) {
+        return (T) moduleData.computeIfAbsent(key, k -> creator.get());
     }
 }
